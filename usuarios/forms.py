@@ -1,13 +1,13 @@
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from .models import Pessoa, CustomUser
 from django import forms
 
-class UsarioForm(UserCreationForm):
+class PessoaForm(UserCreationForm):
     email = forms.EmailField(required=True)
     password1 = forms.CharField(label='Senha', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirme a senha', widget=forms.PasswordInput)
     class Meta:
-        model = CustomUser
+        model = Pessoa
         fields = ['nome', 'sobrenome', 'endereco', 'telefone', 'email', 'username', 'password1', 'password2']
         
 def clean_password2(self):
@@ -29,5 +29,5 @@ def save (self, commit=True):
 
 class UsuarioUpdateForm(forms.ModelForm):
     class Meta:
-        model = CustomUser
+        model = Pessoa
         fields = ['nome', 'sobrenome', 'endereco', 'telefone', 'email']

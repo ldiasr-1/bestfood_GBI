@@ -7,4 +7,4 @@ class UsarioForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['nome', 'sobrenome', 'endereco', 'telefone', 'email', 'username', 'password1', 'password2']
+        fields = ['nome', 'sobrenome', 'email', 'username', 'password1', 'password2']
