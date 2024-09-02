@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Listar Mercados</h1>
+  <a href="{% url 'mercado:criar_mercado' %}">Adicionar Mercado</a>
+  <ul>
+    {% for mercado in mercados %}
+      <li>
+        {{ mercado.nome }} - {{ mercado.endereco }}
+        <a href="{% url 'mercado:editar_mercado' mercado.pk %}">Editar</a>
+        <a href="{% url 'mercado:deletar_mercado' mercado.pk %}">Deletar</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

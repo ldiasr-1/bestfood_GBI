@@ -1,0 +1,22 @@
+<!-- produto_detail.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ produto.nome }}</title>
+</head>
+<body>
+    <h1>{{ produto.nome }}</h1>
+    <p><strong>Preço:</strong> R$ {{ produto.preco }}</p>
+    <p><strong>Categoria:</strong> {{ produto.categoria }}</p>
+    <p><strong>Mercado:</strong> {{ produto.mercado.nome }}</p>
+    <p><strong>Tags:</strong>
+        {% for tag in produto.tags.all %}
+            {{ tag.nome }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Nenhuma tag.
+        {% endfor %}
+    </p>
+    <a href="{% url 'produto:produto_list' %}">Voltar à lista de produtos</a>
+</body>
+</html>
