@@ -65,26 +65,34 @@
                             </div>
                             <form method="post" class="user">
                                 {% csrf_token %}
-                            <div class="form-group">
-                                <label for="id_nome">Nome</label>
-                                <input type="text" class="form-control form-control-user" id="id_nome" name="id_nome" value="{{ form.id_nome.value }}" placeholder="Digite seu Nome">
-                            </div>
-                            <div class="form-group">
-                                <label for="id_sobrenome">Sobrenome</label>
-                                <input type="text" class="form-control form-control-user" id="id_sobrenome" name="id_sobrenome" value="{{ form.id_sobrenome.value }}" placeholder="Digite seu Sobrenome">
-                            </div>
-                            <div class="form-group">
-                                <label for="id_email">Email</label>
-                                <input type="email" class="form-control form-control-user" id="id_email" name="id_email" value="{{ form.id_email.value }}" placeholder="Digite seu E-Mail">
-                            </div>
-                            <div class="form-group">
-                                <label for="id_password1">Senha</label>
-                                <input type="password" class="form-control form-control-user" id="id_password1" name="id_password1" value="{{ form.id_password1.value }}" placeholder="Digite sua Senha">
-                            </div>
-                            <div class="form-group">
-                                <label for="id_password2">Confirmação de Senha</label>
-                                <input type="password" class="form-control form-control-user" id="id_password2" name="id_password2" value="{{ form.id_password2.value }}" placeholder="Confirme sua Senha">
-                            </div>
+                                <div class="form-group">
+                                    <label for="id_nome">Nome</label>
+                                    <input type="text" class="form-control form-control-user" id="id_nome" name="nome" placeholder="Digite seu nome">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_sobrenome">Sobrenome</label>
+                                    <input type="text" class="form-control form-control-user" id="id_sobrenome" name="sobrenome" placeholder="Digite seu sobrenome">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_endereco">Endereço</label>
+                                    <input type="text" class="form-control form-control-user" id="id_endereco" name="endereco" placeholder="Digite seu endereço">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_telefone">Telefone</label>
+                                    <input type="text" class="form-control form-control-user" id="id_telefone" name="telefone" placeholder="Digite seu telefone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_email">Email</label>
+                                    <input type="email" class="form-control form-control-user" id="id_email" name="email" placeholder="Digite seu email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_password1">Senha</label>
+                                    <input type="password" class="form-control form-control-user" id="id_password1" name="password1" placeholder="Digite sua senha">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_password2">Confirmação de Senha</label>
+                                    <input type="password" class="form-control form-control-user" id="id_password2" name="password2" placeholder="Confirme sua senha">
+                                </div>
                                 <div class="form-group">
                                     <label>Escolha um tipo de documento:</label><br>
                                     <input type="radio" id="id_radio_cpf" name="document_type" value="cpf" checked> CPF
@@ -111,7 +119,7 @@
                 </div>
             </div>
         </div>
-
+        {form.as_p}
     </div>
 
     <!-- Bootstrap core JavaScript-->
@@ -127,3 +135,4 @@
 </body>
 
 </html>
+

@@ -1,17 +1,6 @@
-<!-- adicionar_produto.html e editar_produto.html -->
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Adicionar/Editando Produto</title>
-</head>
-<body>
-    <h1>{{ form.instance.pk|yesno:"Editar Produto,Adicionar Produto" }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Salvar</button>
-    </form>
-    <a href="{% url 'produtos:listar_produtos' %}">Voltar</a>
-</body>
-</html>
+<h1>Adicionar Produto</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+</form>

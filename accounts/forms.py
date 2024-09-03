@@ -8,8 +8,9 @@ class UsarioForm(UserCreationForm):
     email = forms.EmailField(required=True)
     cpf = forms.CharField(required=False, max_length=11)
     cnpj = forms.CharField(required=False, max_length=14)
-
+    endereco = forms.CharField(required=False, max_length=100)
+    telefone = forms.CharField(required=False, max_length=20)
 
     class Meta:
         model = CustomUser
-        fields = ['nome', 'sobrenome', 'email', 'password1', 'password2']
+        fields = ['nome', 'sobrenome', 'endereco', 'telefone' ,'email', 'password1', 'password2']

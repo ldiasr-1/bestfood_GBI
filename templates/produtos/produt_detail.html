@@ -8,28 +8,15 @@
 <body>
     <h1>{{ produto.nome }}</h1>
     <p><strong>Preço:</strong> R$ {{ produto.preco }}</p>
-    <p><strong>Descrição:</strong> {{ produto.descricao }}</p>
-    <p><strong>Mercados:</strong><p>
-    <ul>
-        {% if produto.mercados.all %}
-            {% for mercado in produto.mercados.all %}
-                <li>{{ mercado.nome }}</li>
-            {% endfor %}
-        {% else %}
-            <li>Este produto não está disponível em nenhum mercado.</li>
-        {% endif %}
-    </ul>
-    <p><strong>Tags:</strong> 
-    <ul>  
-            {{produto.tag}}  
-            {% for tag in produto.tags.all %}
-                <li>{{ tag.nome }}</li>
-            {% empty %}
-                <li>Nenhuma tag associada.</li>
-            {% endfor %}
-    </ul>
-
+    <p><strong>Categoria:</strong> {{ produto.categoria }}</p>
+    <p><strong>Mercado:</strong> {{ produto.mercado.nome }}</p>
+    <p><strong>Tags:</strong>
+        {% for tag in produto.tags.all %}
+            {{ tag.nome }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Nenhuma tag.
+        {% endfor %}
     </p>
-    <a href="{% url 'produtos:listar_produtos' %}">Voltar à lista de produtos</a>
+    <a href="{% url 'produto:produto_list' %}">Voltar à lista de produtos</a>
 </body>
 </html>
