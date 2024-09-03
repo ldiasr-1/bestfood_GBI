@@ -1,0 +1,129 @@
+{%load static%}
+{% load extras %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Register</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const cpfField = document.getElementById('div_id_cpf');
+    const cnpjField = document.getElementById('div_id_cnpj');
+    const cpfRadio = document.getElementById('id_radio_cpf');
+    const cnpjRadio = document.getElementById('id_radio_cnpj');
+
+    function toggleFields() {
+        if (cpfRadio.checked) {
+            cpfField.style.display = 'block';
+            cnpjField.style.display = 'none';
+        } else if (cnpjRadio.checked) {
+            cpfField.style.display = 'none';
+            cnpjField.style.display = 'block';
+        }
+    }
+
+    cpfRadio.addEventListener('change', toggleFields);
+    cnpjRadio.addEventListener('change', toggleFields);
+
+    // Inicializa o formulário com a seleção correta
+    toggleFields();
+});
+        </script>
+        
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Crie sua Conta!</h1>
+                            </div>
+                            <form method="post" class="user">
+                                {% csrf_token %}
+                            <div class="form-group">
+                                <label for="id_nome">Nome</label>
+                                <input type="text" class="form-control form-control-user" id="id_nome" name="id_nome" value="{{ form.id_nome.value }}" placeholder="Digite seu Nome">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_sobrenome">Sobrenome</label>
+                                <input type="text" class="form-control form-control-user" id="id_sobrenome" name="id_sobrenome" value="{{ form.id_sobrenome.value }}" placeholder="Digite seu Sobrenome">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_email">Email</label>
+                                <input type="email" class="form-control form-control-user" id="id_email" name="id_email" value="{{ form.id_email.value }}" placeholder="Digite seu E-Mail">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_password1">Senha</label>
+                                <input type="password" class="form-control form-control-user" id="id_password1" name="id_password1" value="{{ form.id_password1.value }}" placeholder="Digite sua Senha">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_password2">Confirmação de Senha</label>
+                                <input type="password" class="form-control form-control-user" id="id_password2" name="id_password2" value="{{ form.id_password2.value }}" placeholder="Confirme sua Senha">
+                            </div>
+                                <div class="form-group">
+                                    <label>Escolha um tipo de documento:</label><br>
+                                    <input type="radio" id="id_radio_cpf" name="document_type" value="cpf" checked> CPF
+                                    <input type="radio" id="id_radio_cnpj" name="document_type" value="cnpj"> CNPJ
+                                </div>
+                                <div class="form-group" id="div_id_cpf" placeholder="Digite seu CPF">
+                                    {{ form.cpf.label_tag }}
+                                    {{ form.cpf|add_class:"form-control form-control-user" }}
+                                </div>
+                                <div class="form-group" id="div_id_cnpj" style="display:none;" placeholder="Digite seu CNPJ">
+                                    {{ form.cnpj.label_tag }}
+                                    {{ form.cnpj|add_class:"form-control form-control-user" }}
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-user btn-block">Criar Conta</button>
+                            </form>
+                            <div class="text-center">
+                                <a class="small" href="forgot-password.html">Forgot Password?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="/accounts/login/">Already have an account? Login!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+</body>
+
+</html>

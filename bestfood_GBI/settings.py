@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'produtos',
     'mercado',
     'bestfood_GBI',
-    'accounts',
-    'usuarios',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
