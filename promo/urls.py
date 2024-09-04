@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 from .views import PromocaoCreateView, PromocaoListView, PromocaoDeleteView
 
-app_name = 'promos'
+app_name = 'promo'
 
 urlpatterns = [
     path('', views.PromocaoListView.as_view(), name='listar_promocoes'),

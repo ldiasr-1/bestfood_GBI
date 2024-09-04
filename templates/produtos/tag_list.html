@@ -5,13 +5,14 @@
 {% block content %}
     <h1>Lista de Tags</h1>
     <a href="{% url 'produtos:tag_create' %}" class="btn btn-primary">Adicionar Tag</a>
+    <p></p>
     <ul>
         {% for tag in tags %}
-            <li>
+            <h1 class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                 {{ tag.nome }}
                 <a href="{% url 'produtos:tag_update' tag.pk %}" class="btn btn-warning btn-sm">Editar</a>
                 <a href="{% url 'produtos:tag_delete' tag.pk %}" class="btn btn-danger btn-sm">Deletar</a>
-            </li>
-        {% endfor %}
+            </h1>
+            {% endfor %}
     </ul>
 {% endblock %}

@@ -1,11 +1,11 @@
-{% extends "base_generic.html" %}
+{% extends '_base.html' %}
 
 {% block content %}
   <h1>Adicionar Mercado</h1>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Salvar</button>
+    <button type="submit"class="btn btn-info btn-sm">Salvar</button>
+    <a href="{% url 'mercado:listar_mercados' %} " class="btn btn-warning btn-sm">Voltar</a>
   </form>
-  <a href="{% url 'mercado:listar_mercados' %}">Voltar</a>
 {% endblock %}

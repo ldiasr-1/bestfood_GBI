@@ -1,15 +1,19 @@
-{% extends "base_generic.html" %}
+{% extends '_base.html' %}
 
 {% block content %}
   <h1>Listar Mercados</h1>
-  <a href="{% url 'mercado:criar_mercado' %}">Adicionar Mercado</a>
+  <a href ="{% url 'mercado:criar_mercado' %}" class="btn btn-primary">Adicionar Mercado</a>
+  <p></p>
+  <p></p>
   <ul>
     {% for mercado in mercados %}
-      <li>
+      <h1 class="text-xs font-weight-bold text-primary text-uppercase mb-1">
         {{ mercado.nome }} - {{ mercado.endereco }}
-        <a href="{% url 'mercado:editar_mercado' mercado.pk %}">Editar</a>
-        <a href="{% url 'mercado:deletar_mercado' mercado.pk %}">Deletar</a>
-      </li>
+        <p></p>
+        <a href="{% url 'mercado:editar_mercado' mercado.pk %}"  class="btn btn-info btn-sm">Editar</a>
+        <a href="{% url 'mercado:deletar_mercado' mercado.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+        <p></p>
+      </h1>
     {% endfor %}
   </ul>
 {% endblock %}

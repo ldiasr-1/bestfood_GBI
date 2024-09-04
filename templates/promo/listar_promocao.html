@@ -3,34 +3,21 @@
 
 {% block content %}
     <h1>Promoções</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Percentual</th>
-                <th>Produtos</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for promocao in promocoes %}
-                <tr>
-                    <td>{{ promocao.percentual }}%</td>
-                    <td>
-                        {% for produto in promocao.produtos.all %}
-                            {{ produto.nome }}<br>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        <a href="{% url 'promo:cancelar_promocao' promocao.pk %}" class="btn btn-danger btn-sm">Deletar</a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="3">Nenhuma promoção encontrada.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% for promocao in promocoes %}
+        <div class="promocao-item">
+            <p><strong>Produto:</strong></p>
+            <ul>
+                {% for produto in promocao.produtos.all %}
+                    <li>{{ produto.nome }}</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Percentual de Desconto:</strong> {{ promocao.percentual }}%</p>
+            <a href="{% url 'promo:cancelar_promocao' promocao.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+        </div>
+        <hr>
+    {% empty %}
+        <p>Nenhuma promoção encontrada.</p>
+    {% endfor %}
+    <p></p>
     <a href="{% url 'promo:criar_promocao' %}" class="btn btn-primary">Criar Nova Promoção</a>
 {% endblock %}
-

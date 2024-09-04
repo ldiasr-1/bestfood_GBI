@@ -1,11 +1,11 @@
-{% extends "base_generic.html" %}
+{% extends '_base.html' %}
 
 {% block content %}
   <h1>Deletar Mercado</h1>
-  <p>Tem certeza de que deseja deletar "{{ object.nome }}"?</p>
+  <p>Tem certeza de que deseja deletar "{{ mercado.nome }}"?</p>
   <form method="post">
     {% csrf_token %}
-    <button type="submit">Deletar</button>
+    <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+    <a href="{% url 'mercado:listar_mercados' %}" class="btn btn-warning btn-sm">Voltar</a>
   </form>
-  <a href="{% url 'mercado:listar_mercados' %}">Voltar</a>
 {% endblock %}
