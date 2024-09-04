@@ -1,12 +1,7 @@
-<!-- promo/templates/promo/listar_promocoes.html -->
+{% extends '_base.html' %}
+{% block title %}Listagem de Promoções{% endblock %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Listagem de Promoções</title>
-</head>
-<body>
+{% block content %}
     <h1>Promoções</h1>
     <table>
         <thead>
@@ -37,6 +32,5 @@
         </tbody>
     </table>
     <a href="{% url 'promo:criar_promocao' %}" class="btn btn-primary">Criar Nova Promoção</a>
-</body>
-</html>
+{% endblock %}
 

@@ -1,11 +1,8 @@
 <!-- adicionar_produto.html e editar_produto.html -->
+{% extends '_base.html' %}
+{% block title %}Adicionar/Editando Produto{% endblock %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Adicionar/Editando Produto</title>
-</head>
-<body>
+{% block content %}
     <h1>{{ form.instance.pk|yesno:"Editar Produto,Adicionar Produto" }}</h1>
     <form method="post">
         {% csrf_token %}
@@ -13,5 +10,5 @@
         <button type="submit">Salvar</button>
     </form>
     <a href="{% url 'produtos:listar_produtos' %}">Voltar</a>
-</body>
-</html>
+{% endblock %}
+

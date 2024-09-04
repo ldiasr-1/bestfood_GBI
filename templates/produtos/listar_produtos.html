@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Listagem de Produtos</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
+{% extends '_base.html' %}
+{% block title %}Listagem de Produtos{% endblock %}
+
+{% block content %}
     <div style="text-align: left; margin-bottom: 20px;">
         <a href="{% url 'produtos:adicionar_produto' %}" class="btn btn-primary">Adicionar Produto</a>
         <a href="{% url 'produtos:tag_list' %}" class="btn btn-secondary">Listar Tags</a>
@@ -67,6 +64,4 @@
             {% endif %}
         </span>
     </div>
-
-</body>
-</html>
+{% endblock %}

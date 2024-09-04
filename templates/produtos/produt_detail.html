@@ -1,15 +1,11 @@
-<!-- produto_detail.html -->
+{% extends '_base.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ produto.nome }}</title>
-</head>
-<body>
+{% block content %}
     <h1>{{ produto.nome }}</h1>
     <p><strong>Preço:</strong> R$ {{ produto.preco }}</p>
     <p><strong>Descrição:</strong> {{ produto.descricao }}</p>
-    <p><strong>Mercados:</strong><p>
+    
+    <p><strong>Mercados:</strong></p>
     <ul>
         {% if produto.mercados.all %}
             {% for mercado in produto.mercados.all %}
@@ -19,17 +15,15 @@
             <li>Este produto não está disponível em nenhum mercado.</li>
         {% endif %}
     </ul>
-    <p><strong>Tags:</strong> 
+
+    <p><strong>Tags:</strong></p>
     <ul>  
-            {{produto.tag}}  
-            {% for tag in produto.tags.all %}
-                <li>{{ tag.nome }}</li>
-            {% empty %}
-                <li>Nenhuma tag associada.</li>
-            {% endfor %}
+        {% for tag in produto.tags.all %}
+            <li>{{ tag.nome }}</li>
+        {% empty %}
+            <li>Nenhuma tag associada.</li>
+        {% endfor %}
     </ul>
 
-    </p>
     <a href="{% url 'produtos:listar_produtos' %}">Voltar à lista de produtos</a>
-</body>
-</html>
+{% endblock %}

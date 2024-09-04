@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Deletar Produto</title>
-</head>
-<body>
+{% extends '_base.html' %}
+{% block title %}Deletar Produto{% endblock %}
+
+{% block content %}
     <h1>Deletar Produto</h1>
     <p>Tem certeza de que deseja deletar o produto "{{ produto.nome }}"?</p>
     <form method="post">
@@ -11,5 +9,4 @@
         <button type="submit" class="btn btn-danger">Deletar</button>
         <a href="{% url 'produtos:listar_produtos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
-</body>
-</html>
+{% endblock %}

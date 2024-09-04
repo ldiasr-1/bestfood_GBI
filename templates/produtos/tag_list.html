@@ -1,10 +1,8 @@
 <!-- produtos/tag_list.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Tags</title>
-</head>
-<body>
+{% extends '_base.html' %}
+{% block title %}Lista de Tags{% endblock %}
+
+{% block content %}
     <h1>Lista de Tags</h1>
     <a href="{% url 'produtos:tag_create' %}" class="btn btn-primary">Adicionar Tag</a>
     <ul>
@@ -16,5 +14,4 @@
             </li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

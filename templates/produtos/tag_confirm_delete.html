@@ -1,15 +1,11 @@
 <!-- produtos/tag_confirm_delete.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Confirmar Deleção</title>
-</head>
-<body>
+{% extends '_base.html' %}
+{% block title %}Confirmar Deleção{% endblock %}
+{% block content %}
     <h1>Tem certeza de que deseja deletar a tag "{{ tag.nome }}"?</h1>
     <form method="post">
         {% csrf_token %}
         <button type="submit">Confirmar</button>
     </form>
     <a href="{% url 'produtos:tag_list' %}">Cancelar</a>
-</body>
-</html>
+{% endblock %}

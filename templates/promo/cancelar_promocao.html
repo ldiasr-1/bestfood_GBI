@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Cancelar Promoção</title>
-</head>
-<body>
+{% extends '_base.html' %}
+{% block title %}Cancelar Promoção{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Cancelar Promoção</h1>
         <p>Você tem certeza que deseja cancelar a promoção "{{ object.nome }}"?</p>
@@ -14,5 +13,4 @@
             <a href="{% url 'promo:listar_promocoes' %}" class="btn btn-secondary">Voltar</a>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}
