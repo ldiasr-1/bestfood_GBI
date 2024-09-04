@@ -1,10 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-import uuid
+from django.contrib.auth.models import User
 
 # Create your models here.
-class CustomUser(AbstractUser):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class CustomUser(User):
     nome = models.CharField(max_length=100)
     sobrenome = models.CharField(max_length=100)
 

@@ -42,9 +42,8 @@ INSTALLED_APPS = [
     'produtos',
     'mercado',
     'bestfood_GBI',
+    'promo',
 ]
-
-AUTH_USER_MODEL = 'accounts.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -135,3 +134,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/produtos/'
+LOGIN_URL = '/accounts/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'

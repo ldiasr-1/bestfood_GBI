@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Criar Promoção</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Criar Nova Promoção</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Criar Promoção</button>
+            <a href="{% url 'promo:listar_promocoes' %}" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</body>
+</html>
+

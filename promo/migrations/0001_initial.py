@@ -8,15 +8,16 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('produtos', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Mercado',
+            name='Promocao',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nome', models.CharField(max_length=200)),
-                ('endereco', models.CharField(max_length=200)),
+                ('percentual', models.DecimalField(decimal_places=0, max_digits=10)),
+                ('produtos', models.ManyToManyField(related_name='promocoes', to='produtos.produto')),
             ],
         ),
     ]

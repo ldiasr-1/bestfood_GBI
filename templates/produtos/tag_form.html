@@ -1,0 +1,16 @@
+<!-- produtos/tag_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adicionar/Editar Tag</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Editar{% else %}Adicionar{% endif %} Tag</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'produtos:tag_list' %}">Voltar</a>
+</body>
+</html>

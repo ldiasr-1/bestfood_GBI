@@ -50,7 +50,13 @@
 </head>
 
 <body class="bg-gradient-primary">
-
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <div class="container">
 
         <div class="card o-hidden border-0 shadow-lg my-5">

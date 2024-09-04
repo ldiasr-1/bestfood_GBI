@@ -1,0 +1,20 @@
+<!-- produtos/tag_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Tags</title>
+</head>
+<body>
+    <h1>Lista de Tags</h1>
+    <a href="{% url 'produtos:tag_create' %}" class="btn btn-primary">Adicionar Tag</a>
+    <ul>
+        {% for tag in tags %}
+            <li>
+                {{ tag.nome }}
+                <a href="{% url 'produtos:tag_update' tag.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'produtos:tag_delete' tag.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

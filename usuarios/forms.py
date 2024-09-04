@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from .models import Pessoa, CustomUser
+from .models import Pessoa, User
 from django import forms
 
 class PessoaForm(UserCreationForm):

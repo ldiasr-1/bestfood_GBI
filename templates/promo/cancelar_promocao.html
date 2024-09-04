@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cancelar Promoção</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Cancelar Promoção</h1>
+        <p>Você tem certeza que deseja cancelar a promoção "{{ object.nome }}"?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar Cancelamento</button>
+            <a href="{% url 'promo:listar_promocoes' %}" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</body>
+</html>

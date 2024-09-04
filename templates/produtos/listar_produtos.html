@@ -2,17 +2,50 @@
 <html>
 <head>
     <title>Listagem de Produtos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
     <div style="text-align: left; margin-bottom: 20px;">
         <a href="{% url 'produtos:adicionar_produto' %}" class="btn btn-primary">Adicionar Produto</a>
+        <a href="{% url 'produtos:tag_list' %}" class="btn btn-secondary">Listar Tags</a>
+        <a href="{% url 'promo:listar_promocoes' %}" class="btn btn-secondary">Visualizar Promoções</a>
     </div>
 
+    <!-- Barra de pesquisa -->
+    <form method="GET" action="{% url 'produtos:listar_produtos' %}">
+        <input type="text" name="q" placeholder="Pesquisar produtos..." value="{{ request.GET.q }}">
+        <button type="submit">Pesquisar</button>
+    </form>
+
+    <form method="get">
+        <!-- Botão de Ordenação -->
+        <select name="ordenar" onchange="this.form.submit()">
+            <option value="preco" {% if ordenar_por == 'preco' %}selected{% endif %}>Ordenar por Preço</option>
+            <option value="nome" {% if ordenar_por == 'nome' %}selected{% endif %}>Ordenar por Nome</option>
+        </select>
+    </form>
+    
     <h1>Lista de Produtos</h1>
 
+    <!-- Lista de produtos com opções de visualizar, editar e deletar -->
     <ul>
-        {% for produto in produtos %}
-            <li>{{ produto.nome }} - {{ produto.preco }}</li>
+        {% for item in produtos_com_promocao %}
+            <li>
+                {{ item.produto.nome }} - 
+                {% if item.preco_promocional < item.produto.preco %}
+                    <span style="text-decoration: line-through;">{{ item.produto.preco }}</span> -
+                    {{ item.preco_promocional }}
+                {% else %}
+                    {{ item.produto.preco }}
+                {% endif %} - 
+                {% for mercado in item.produto.mercados.all %}
+                    {{ mercado.nome }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                <br>
+                <a href="{% url 'produtos:produt_detail' item.produto.pk %}" class="btn btn-info btn-sm">Visualizar</a> |
+                <a href="{% url 'produtos:editar_produto' item.produto.pk %}" class="btn btn-warning btn-sm">Editar</a> |
+                <a href="{% url 'produtos:deletar_produto' item.produto.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+            </li>
         {% endfor %}
     </ul>
 
@@ -20,17 +53,17 @@
     <div class="pagination">
         <span class="step-links">
             {% if produtos.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ produtos.previous_page_number }}">previous</a>
+                <a href="?page=1&q={{ request.GET.q }}">&laquo; primeiro</a>
+                <a href="?page={{ produtos.previous_page_number }}&q={{ request.GET.q }}">anterior</a>
             {% endif %}
 
             <span class="current">
-                Page {{ produtos.number }} of {{ produtos.paginator.num_pages }}.
+                Página {{ produtos.number }} de {{ produtos.paginator.num_pages }}.
             </span>
 
             {% if produtos.has_next %}
-                <a href="?page={{ produtos.next_page_number }}">next</a>
-                <a href="?page={{ produtos.paginator.num_pages }}">last &raquo;</a>
+                <a href="?page={{ produtos.next_page_number }}&q={{ request.GET.q }}">próxima</a>
+                <a href="?page={{ produtos.paginator.num_pages }}&q={{ request.GET.q }}">última &raquo;</a>
             {% endif %}
         </span>
     </div>

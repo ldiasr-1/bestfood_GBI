@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.models import Group
 from django.db import IntegrityError
@@ -40,7 +41,8 @@ def createuser(request):
                 else:
                     return HttpResponse('Erro: CPF ou CNPJ não fornecido', status=400)
                 user.groups.add(group)
-                return HttpResponse('Usuário criado com sucesso')
+                messages.success(request, 'Usuário criado com sucesso')
+                return redirect('/accounts/login/')
             except IntegrityError:
                 return HttpResponse('Erro: CPF ou CNPJ já cadastrado', status=400)
         else:
@@ -48,3 +50,6 @@ def createuser(request):
     else:
         form = UsarioForm()
         return render(request, 'accounts/create.html', {'form': form})
+    
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
