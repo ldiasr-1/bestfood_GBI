@@ -1,25 +1,18 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.models import Group
 from django.db import IntegrityError
 from .forms import UsarioForm
 from usuarios.models import Cliente, Vendedor
 
 def createuser(request):
-    
-    grupo_cliente, _ = Group.objects.get_or_create(name='Cliente')
-    grupo_vendedor, _ = Group.objects.get_or_create(name='Vendedor')
-
     if request.method == "POST":
         form = UsarioForm(request.POST)
         if form.is_valid():
             try:
                 if form.cleaned_data.get('cpf'):
-                    username = form.cleaned_data['cpf']
-                    group = grupo_cliente
                     user = Cliente.objects.create_user(
-                        username=username,
+                        username=form.cleaned_data['cpf'],
                         password=form.cleaned_data['password1'],
                         endereco=form.cleaned_data.get('endereco', ''),
                         telefone=form.cleaned_data.get('telefone', ''),
@@ -29,10 +22,8 @@ def createuser(request):
                         email=form.cleaned_data.get('email', '')
                     )
                 elif form.cleaned_data.get('cnpj'):
-                    username = form.cleaned_data['cnpj']
-                    group = grupo_vendedor
                     user = Vendedor.objects.create_user(
-                        username=username,
+                        username=form.cleaned_data['cnpj'],
                         password=form.cleaned_data['password1'],
                         endereco=form.cleaned_data.get('endereco', ''),
                         telefone=form.cleaned_data.get('telefone', ''),
@@ -45,7 +36,6 @@ def createuser(request):
                     messages.error(request, 'Erro: CPF ou CNPJ não fornecido')
                     return redirect('accounts:add')
 
-                user.groups.add(group)
                 messages.success(request, 'Usuário criado com sucesso')
                 auth_login(request, user)  # Faz login automaticamente após o cadastro
                 return redirect('produtos:listar_produtos')  # Redireciona para a página inicial
