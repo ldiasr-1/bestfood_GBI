@@ -1,10 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from .forms import PessoaForm
-from .forms import UsuarioUpdateForm
+from .forms import PessoaForm, UsuarioUpdateForm
 from .models import Pessoa
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-# Create your views here.
+
 @login_required
 def index(request):
     return render(request, "pessoa/index.html")
@@ -24,14 +23,11 @@ def create(request):
 def read(request):
     filtro = {}
     for key, value in request.GET.items():
-        if key in ['cpf','telefone', 'nome', 'endereco']:
-            filtro[f"{key}__contains"] = value
+        if key in ['cpf', 'telefone', 'nome', 'endereco']:
+            filtro[f"{key}__icontains"] = value
 
     pessoas = Pessoa.objects.filter(**filtro)
-    
-    if not pessoas:
-        return render(request, "pessoa/list.html", {"pessoas": pessoas, "no_results": True})    
-    return render(request, "pessoa/list.html", {"pessoas": pessoas, "no_results": False})
+    return render(request, "pessoa/list.html", {"pessoas": pessoas})
 
 @login_required
 def update(request, pessoa_id):

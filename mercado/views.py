@@ -1,7 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
-# mercado/views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Mercado
 from .forms import MercadoForm
@@ -26,7 +22,7 @@ def editar_mercado(request, pk):
         form = MercadoForm(request.POST, instance=mercado)
         if form.is_valid():
             form.save()
-            return redirect('mercado/mercado:listar_mercados')
+            return redirect('mercado:listar_mercados')
     else:
         form = MercadoForm(instance=mercado)
     return render(request, 'mercado/editar_mercado.html', {'form': form})

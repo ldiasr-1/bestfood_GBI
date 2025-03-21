@@ -1,21 +1,24 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse
+from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import Group
 from django.db import IntegrityError
 from .forms import UsarioForm
 from usuarios.models import Cliente, Vendedor
 
 def createuser(request):
+    
+    grupo_cliente, _ = Group.objects.get_or_create(name='Cliente')
+    grupo_vendedor, _ = Group.objects.get_or_create(name='Vendedor')
+
     if request.method == "POST":
         form = UsarioForm(request.POST)
         if form.is_valid():
             try:
-                # Lógica para determinar o grupo do usuário e definir o username
                 if form.cleaned_data.get('cpf'):
                     username = form.cleaned_data['cpf']
-                    group = Group.objects.get(id=1)  # Grupo clientes
-                    user = Cliente.objects.create(
+                    group = grupo_cliente
+                    user = Cliente.objects.create_user(
                         username=username,
                         password=form.cleaned_data['password1'],
                         endereco=form.cleaned_data.get('endereco', ''),
@@ -27,8 +30,8 @@ def createuser(request):
                     )
                 elif form.cleaned_data.get('cnpj'):
                     username = form.cleaned_data['cnpj']
-                    group = Group.objects.get(id=2)  # Grupo vendedores
-                    user = Vendedor.objects.create(
+                    group = grupo_vendedor
+                    user = Vendedor.objects.create_user(
                         username=username,
                         password=form.cleaned_data['password1'],
                         endereco=form.cleaned_data.get('endereco', ''),
@@ -39,17 +42,19 @@ def createuser(request):
                         email=form.cleaned_data.get('email', '')
                     )
                 else:
-                    return HttpResponse('Erro: CPF ou CNPJ não fornecido', status=400)
+                    messages.error(request, 'Erro: CPF ou CNPJ não fornecido')
+                    return redirect('accounts:add')
+
                 user.groups.add(group)
                 messages.success(request, 'Usuário criado com sucesso')
-                return redirect('/accounts/login/')
-            except IntegrityError:
-                return HttpResponse('Erro: CPF ou CNPJ já cadastrado', status=400)
+                auth_login(request, user)  # Faz login automaticamente após o cadastro
+                return redirect('produtos:listar_produtos')  # Redireciona para a página inicial
+            except IntegrityError as e:
+                messages.error(request, f'Erro: {str(e)}')
+                return redirect('accounts:add')
         else:
-            return redirect('add')  # Redireciona para a página add se o formulário não for válido
+            messages.error(request, 'Formulário inválido')
+            return redirect('accounts:add')
     else:
         form = UsarioForm()
         return render(request, 'accounts/create.html', {'form': form})
-    
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
