@@ -15,23 +15,19 @@ def create_groups_and_permissions(sender, **kwargs):
     content_type_mercado = ContentType.objects.get_for_model(Mercado)
     content_type_promocao = ContentType.objects.get_for_model(Promocao)
 
-    permissao_ver_produto, _ = Permission.objects.get_or_create(
-        codename='view_produto',
-        content_type=content_type_produto,
-        defaults={'name': 'Can view produto'}
-    )
-    permissao_ver_mercado, _ = Permission.objects.get_or_create(
-        codename='view_mercado',
-        content_type=content_type_mercado,
-        defaults={'name': 'Can view mercado'}
-    )
-    permissao_ver_promocao, _ = Permission.objects.get_or_create(
-        codename='view_promocao',
-        content_type=content_type_promocao,
-        defaults={'name': 'Can view promocao'}
-    )
+    permissoes_cliente = [
+        ('view_produto', 'Can view produto', content_type_produto),
+        ('view_mercado', 'Can view mercado', content_type_mercado),
+        ('view_promocao', 'Can view promocao', content_type_promocao),
+    ]
 
-    grupo_cliente.permissions.add(permissao_ver_produto, permissao_ver_mercado, permissao_ver_promocao)
+    for codename, name, content_type in permissoes_cliente:
+        permissao, _ = Permission.objects.get_or_create(
+            codename=codename,
+            content_type=content_type,
+            defaults={'name': name}
+        )
+        grupo_cliente.permissions.add(permissao)
 
     permissoes_vendedor = [
         ('add_produto', 'Can add produto', content_type_produto),

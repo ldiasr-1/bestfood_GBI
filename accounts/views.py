@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.db import IntegrityError
+from django.contrib.auth.models import Group
 from .forms import UsarioForm
 from usuarios.models import Cliente, Vendedor
 
@@ -11,6 +12,7 @@ def createuser(request):
         if form.is_valid():
             try:
                 if form.cleaned_data.get('cpf'):
+                    # Cria um Cliente
                     user = Cliente.objects.create_user(
                         username=form.cleaned_data['cpf'],
                         password=form.cleaned_data['password1'],
@@ -21,7 +23,11 @@ def createuser(request):
                         sobrenome=form.cleaned_data.get('sobrenome', ''),
                         email=form.cleaned_data.get('email', '')
                     )
+                    # Adiciona o usuário ao grupo Cliente
+                    grupo_cliente = Group.objects.get(name='Cliente')
+                    user.groups.add(grupo_cliente)
                 elif form.cleaned_data.get('cnpj'):
+                    # Cria um Vendedor
                     user = Vendedor.objects.create_user(
                         username=form.cleaned_data['cnpj'],
                         password=form.cleaned_data['password1'],
@@ -32,6 +38,9 @@ def createuser(request):
                         sobrenome=form.cleaned_data.get('sobrenome', ''),
                         email=form.cleaned_data.get('email', '')
                     )
+                    # Adiciona o usuário ao grupo Vendedor
+                    grupo_vendedor = Group.objects.get(name='Vendedor')
+                    user.groups.add(grupo_vendedor)
                 else:
                     messages.error(request, 'Erro: CPF ou CNPJ não fornecido')
                     return redirect('accounts:add')

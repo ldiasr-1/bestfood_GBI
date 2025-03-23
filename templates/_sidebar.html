@@ -2,78 +2,77 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-<!-- Link para BestFood GBI -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'produtos:listar_produtos' %}">
-    <div class="sidebar-brand-icon">
-        <img src="{% static 'img/food_5134814.png' %}" alt="Icon" style="width: 20px; height: 20px;">
-    </div>
-    <div class="sidebar-brand-text mx-3">BestFood GBI</div>
-</a>
-
-<!-- Divider -->
-<hr class="sidebar-divider my-0">
-
-<!-- Menu para Cliente (id=1) -->
-{% if user.id == 2 %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'produtos:listar_produtos' %}">
-            <i class="fas fa-fw fa-list"></i>
-            <span>Visualizar Produtos</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'promo:listar_promocoes' %}">
-            <i class="fas fa-fw fa-tags"></i>
-            <span>Promoções</span>
-        </a>
-    </li>
-{% endif %}
-
-<!-- Menu para Vendedor (id=2) -->
-{% if user.id == 1 %}
-    <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#mercadoDropdown" aria-expanded="true" aria-controls="mercadoDropdown">
-            <i class="fas fa-fw fa-store"></i>
-            <span>Mercado</span>
-        </a>
-        <div id="mercadoDropdown" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{% url 'mercado:criar_mercado' %}">Adicionar Mercado</a>
-                <a class="collapse-item" href="{% url 'mercado:editar_mercado' pk=1 %}">Editar Mercados</a>
-                <a class="collapse-item" href="{% url 'mercado:listar_mercados' %}">Visualizar Mercados</a>
-            </div>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'produtos:listar_produtos' %}">
+        <div class="sidebar-brand-icon">
+            <img src="{% static 'img/food_5134814.png' %}" alt="Icon" style="width: 20px; height: 20px;">
         </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#produtosDropdown" aria-expanded="true" aria-controls="produtosDropdown">
-            <i class="fas fa-fw fa-box"></i>
-            <span>Produtos</span>
-        </a>
-        <div id="produtosDropdown" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{% url 'produtos:adicionar_produto' %}">Adicionar Produtos</a>
-                <a class="collapse-item" href="{% url 'produtos:editar_produto' pk=1 %}">Editar Produtos</a>
-                <a class="collapse-item" href="{% url 'produtos:listar_produtos' %}">Visualizar Produtos</a>
-            </div>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'promo:listar_promocoes' %}">
-            <i class="fas fa-fw fa-tags"></i>
-            <span>Promoções</span>
-        </a>
-    </li>
-{% endif %}
+        <div class="sidebar-brand-text mx-3">BestFood GBI</div>
+    </a>
 
-    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    {% if user.groups.all.0.name == 'Cliente' %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'produtos:listar_produtos' %}">
+                <i class="fas fa-fw fa-list"></i>
+                <span>Visualizar Produtos</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'promo:listar_promocoes' %}">
+                <i class="fas fa-fw fa-tags"></i>
+                <span>Promoções</span>
+            </a>
+        </li>
+    {% endif %}
+
+    {% if user.groups.all.0.name == 'Vendedor' %}
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#mercadoDropdown" aria-expanded="true" aria-controls="mercadoDropdown">
+                <i class="fas fa-fw fa-store"></i>
+                <span>Mercado</span>
+            </a>
+            <div id="mercadoDropdown" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{% url 'mercado:criar_mercado' %}">Adicionar Mercado</a>
+                    <a class="collapse-item" href="{% url 'mercado:listar_mercados' %}">Visualizar Mercados</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#produtosDropdown" aria-expanded="true" aria-controls="produtosDropdown">
+                <i class="fas fa-fw fa-box"></i>
+                <span>Produtos</span>
+            </a>
+            <div id="produtosDropdown" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{% url 'produtos:adicionar_produto' %}">Adicionar Produto</a>
+                    <a class="collapse-item" href="{% url 'produtos:listar_produtos' %}">Visualizar Produtos</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'promo:listar_promocoes' %}">
+                <i class="fas fa-fw fa-tags"></i>
+                <span>Promoções</span>
+            </a>
+        </li>
+    {% endif %}
+
     <hr class="sidebar-divider">
 
-    
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'produtos:tag_list' %}">
+            <i class="fas fa-fw fa-tags"></i>
+            <span>Tags</span>
+        </a>
+    </li>
 
-    
-
-    <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
 </ul>
-<!-- End of Sidebar -->
