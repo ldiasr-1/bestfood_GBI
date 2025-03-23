@@ -8,16 +8,13 @@ from promo.models import Promocao
 
 @receiver(post_migrate)
 def create_groups_and_permissions(sender, **kwargs):
-    # Cria os grupos Cliente e Vendedor
     grupo_cliente, _ = Group.objects.get_or_create(name='Cliente')
     grupo_vendedor, _ = Group.objects.get_or_create(name='Vendedor')
 
-    # Obtém os content types dos modelos
     content_type_produto = ContentType.objects.get_for_model(Produto)
     content_type_mercado = ContentType.objects.get_for_model(Mercado)
     content_type_promocao = ContentType.objects.get_for_model(Promocao)
 
-    # Permissões para clientes (apenas visualização)
     permissao_ver_produto, _ = Permission.objects.get_or_create(
         codename='view_produto',
         content_type=content_type_produto,
@@ -36,7 +33,6 @@ def create_groups_and_permissions(sender, **kwargs):
 
     grupo_cliente.permissions.add(permissao_ver_produto, permissao_ver_mercado, permissao_ver_promocao)
 
-    # Permissões para vendedores (CRUD completo)
     permissoes_vendedor = [
         ('add_produto', 'Can add produto', content_type_produto),
         ('change_produto', 'Can change produto', content_type_produto),

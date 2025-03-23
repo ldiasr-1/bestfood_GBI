@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Mercado
 from .forms import MercadoForm
 
@@ -6,6 +7,8 @@ def listar_mercados(request):
     mercados = Mercado.objects.all()
     return render(request, 'mercado/listar_mercados.html', {'mercados': mercados})
 
+@login_required
+@permission_required('mercado.add_mercado', raise_exception=True)
 def criar_mercado(request):
     if request.method == 'POST':
         form = MercadoForm(request.POST)
@@ -16,6 +19,8 @@ def criar_mercado(request):
         form = MercadoForm()
     return render(request, 'mercado/criar_mercado.html', {'form': form})
 
+@login_required
+@permission_required('mercado.change_mercado', raise_exception=True)
 def editar_mercado(request, pk):
     mercado = get_object_or_404(Mercado, pk=pk)
     if request.method == 'POST':
@@ -27,6 +32,8 @@ def editar_mercado(request, pk):
         form = MercadoForm(instance=mercado)
     return render(request, 'mercado/editar_mercado.html', {'form': form})
 
+@login_required
+@permission_required('mercado.delete_mercado', raise_exception=True)
 def deletar_mercado(request, pk):
     mercado = get_object_or_404(Mercado, pk=pk)
     if request.method == 'POST':

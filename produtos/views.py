@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Produto, Tag
 from .forms import ProdutoForm, TagForm
 from promo.models import Promocao
 
-# View baseada em classe para listar produtos
 class ProdutoListView(ListView):
     model = Produto
     template_name = 'produtos/listar_produtos.html'
@@ -20,13 +20,11 @@ class ProdutoListView(ListView):
             queryset = queryset.order_by('nome')
         return queryset
 
-# View baseada em classe para detalhes do produto
 class ProdutoDetailView(DetailView):
     model = Produto
     template_name = 'produtos/produt_detail.html'
     context_object_name = 'produto'
 
-# View baseada em função para listar produtos
 def listar_produtos(request):
     query = request.GET.get('q')
     ordenar_por = request.GET.get('ordenar', 'preco')
@@ -53,7 +51,8 @@ def listar_produtos(request):
 
     return render(request, 'produtos/listar_produtos.html', {'produtos_com_promocao': produtos_com_promocao, 'query': query, 'ordenar_por': ordenar_por})
 
-# View baseada em função para adicionar produto
+@login_required
+@permission_required('produtos.add_produto', raise_exception=True)
 def adicionar_produto(request):
     if request.method == 'POST':
         form = ProdutoForm(request.POST)
@@ -64,7 +63,8 @@ def adicionar_produto(request):
         form = ProdutoForm()
     return render(request, 'produtos/adicionar_produto.html', {'form': form})
 
-# View baseada em função para editar produto
+@login_required
+@permission_required('produtos.change_produto', raise_exception=True)
 def editar_produto(request, pk):
     produto = get_object_or_404(Produto, pk=pk)
     if request.method == 'POST':
@@ -76,7 +76,8 @@ def editar_produto(request, pk):
         form = ProdutoForm(instance=produto)
     return render(request, 'produtos/editar_produto.html', {'form': form})
 
-# View baseada em função para deletar produto
+@login_required
+@permission_required('produtos.delete_produto', raise_exception=True)
 def deletar_produto(request, pk):
     produto = get_object_or_404(Produto, pk=pk)
     if request.method == 'POST':
@@ -84,11 +85,12 @@ def deletar_produto(request, pk):
         return redirect('produtos:listar_produtos')
     return render(request, 'produtos/deletar_produtos.html', {'produto': produto})
 
-# Views para tags
 def tag_list(request):
     tags = Tag.objects.all()
     return render(request, 'produtos/tag_list.html', {'tags': tags})
 
+@login_required
+@permission_required('produtos.add_tag', raise_exception=True)
 def tag_create(request):
     if request.method == 'POST':
         form = TagForm(request.POST)
@@ -99,6 +101,8 @@ def tag_create(request):
         form = TagForm()
     return render(request, 'produtos/tag_form.html', {'form': form})
 
+@login_required
+@permission_required('produtos.change_tag', raise_exception=True)
 def tag_update(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
     if request.method == 'POST':
@@ -110,6 +114,8 @@ def tag_update(request, pk):
         form = TagForm(instance=tag)
     return render(request, 'produtos/tag_form.html', {'form': form})
 
+@login_required
+@permission_required('produtos.delete_tag', raise_exception=True)
 def tag_delete(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
     if request.method == 'POST':
