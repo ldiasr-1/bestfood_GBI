@@ -1,3 +1,4 @@
+#promo\models.py
 from django.db import models
 from produtos.models import Produto
 
