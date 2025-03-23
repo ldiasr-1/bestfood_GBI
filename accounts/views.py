@@ -1,18 +1,17 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.contrib.auth import login as auth_login
+from django.contrib import messages
 from django.db import IntegrityError
-from django.contrib.auth.models import Group
 from .forms import UsarioForm
 from usuarios.models import Cliente, Vendedor
 
+# Views existentes (para templates HTML)
 def createuser(request):
     if request.method == "POST":
         form = UsarioForm(request.POST)
         if form.is_valid():
             try:
                 if form.cleaned_data.get('cpf'):
-                    # Cria um Cliente
                     user = Cliente.objects.create_user(
                         username=form.cleaned_data['cpf'],
                         password=form.cleaned_data['password1'],
@@ -23,11 +22,7 @@ def createuser(request):
                         sobrenome=form.cleaned_data.get('sobrenome', ''),
                         email=form.cleaned_data.get('email', '')
                     )
-                    # Adiciona o usuário ao grupo Cliente
-                    grupo_cliente = Group.objects.get(name='Cliente')
-                    user.groups.add(grupo_cliente)
                 elif form.cleaned_data.get('cnpj'):
-                    # Cria um Vendedor
                     user = Vendedor.objects.create_user(
                         username=form.cleaned_data['cnpj'],
                         password=form.cleaned_data['password1'],
@@ -38,16 +33,13 @@ def createuser(request):
                         sobrenome=form.cleaned_data.get('sobrenome', ''),
                         email=form.cleaned_data.get('email', '')
                     )
-                    # Adiciona o usuário ao grupo Vendedor
-                    grupo_vendedor = Group.objects.get(name='Vendedor')
-                    user.groups.add(grupo_vendedor)
                 else:
                     messages.error(request, 'Erro: CPF ou CNPJ não fornecido')
                     return redirect('accounts:add')
 
                 messages.success(request, 'Usuário criado com sucesso')
-                auth_login(request, user)  # Faz login automaticamente após o cadastro
-                return redirect('produtos:listar_produtos')  # Redireciona para a página inicial
+                auth_login(request, user)
+                return redirect('produtos:listar_produtos')
             except IntegrityError as e:
                 messages.error(request, f'Erro: {str(e)}')
                 return redirect('accounts:add')
@@ -57,3 +49,17 @@ def createuser(request):
     else:
         form = UsarioForm()
         return render(request, 'accounts/create.html', {'form': form})
+
+# Views da API
+from rest_framework import viewsets
+from django.contrib.auth.models import User
+from .models import CustomUser
+from .serializers import UserSerializer, CustomUserSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class CustomUserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer

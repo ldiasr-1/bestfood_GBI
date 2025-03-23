@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'mercado',
     'bestfood_GBI',
     'promo',
+    'rest_framework',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -140,3 +141,15 @@ LOGIN_URL = '/accounts/'
 LOGIN_REDIRECT_URL = 'produtos:listar_produtos'
 LOGOUT_REDIRECT_URL = 'accounts:login'
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Autenticação por token JWT
+
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated', 
+    ],
+}

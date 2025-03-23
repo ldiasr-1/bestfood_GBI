@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from .models import Mercado
 from .forms import MercadoForm
 
+# Views existentes (para templates HTML)
 def listar_mercados(request):
     mercados = Mercado.objects.all()
     return render(request, 'mercado/listar_mercados.html', {'mercados': mercados})
@@ -40,3 +41,12 @@ def deletar_mercado(request, pk):
         mercado.delete()
         return redirect('mercado:listar_mercados')
     return render(request, 'mercado/deletar_mercado.html', {'mercado': mercado})
+
+# Views da API
+from rest_framework import viewsets
+from .models import Mercado
+from .serializers import MercadoSerializer
+
+class MercadoViewSet(viewsets.ModelViewSet):
+    queryset = Mercado.objects.all()
+    serializer_class = MercadoSerializer
