@@ -3,6 +3,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib import messages
 from django.db import IntegrityError
 from .forms import UsarioForm
+from .models import CustomUser  # Substitua User por CustomUser
 from usuarios.models import Cliente, Vendedor
 
 # Views existentes (para templates HTML)
@@ -52,12 +53,11 @@ def createuser(request):
 
 # Views da API
 from rest_framework import viewsets
-from django.contrib.auth.models import User
-from .models import CustomUser
+from .models import CustomUser  # Substitua User por CustomUser
 from .serializers import UserSerializer, CustomUserSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()  # Use CustomUser em vez de User
     serializer_class = UserSerializer
 
 class CustomUserViewSet(viewsets.ModelViewSet):

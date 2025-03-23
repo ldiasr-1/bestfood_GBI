@@ -1,47 +1,64 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import render, get_object_or_404
+from .forms import PessoaForm, UsuarioUpdateForm
+from .models import Pessoa
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+
+@login_required
+def index(request):
+    return render(request, "pessoa/index.html")
+
+@login_required
+def create(request):
+    if request.method == "POST":
+        form = PessoaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/pessoa/list/')
+    else:
+        form = PessoaForm()
+    return render(request, "pessoa/add.html", {"form": form})
+
+@login_required
+def read(request):
+    filtro = {}
+    for key, value in request.GET.items():
+        if key in ['cpf', 'telefone', 'nome', 'endereco']:
+            filtro[f"{key}__icontains"] = value
+
+    pessoas = Pessoa.objects.filter(**filtro)
+    return render(request, "pessoa/list.html", {"pessoas": pessoas})
+
+@login_required
+def update(request, pessoa_id):
+    pessoa = get_object_or_404(Pessoa, pk=pessoa_id)
+    if request.method == "POST":
+        form = UsuarioUpdateForm(request.POST, instance=pessoa)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/pessoa/list/')
+    else:
+        form = UsuarioUpdateForm(instance=pessoa)
+    return render(request, 'pessoa/edit.html', {'form': form})
+
+@login_required
+def delete(request, pessoa_id):
+    Pessoa.objects.get(pk=pessoa_id).delete()
+    return HttpResponseRedirect("/pessoa/list/")
+
+@login_required
+def detail(request, pessoa_id):
+    pessoa = get_object_or_404(Pessoa, pk=pessoa_id)
+    return render(request, "pessoa/detail.html", {"pessoa": pessoa})
+
+from rest_framework import viewsets
 from .models import Cliente, Vendedor
-from .forms import ClienteForm, VendedorForm
+from .serializers import ClienteSerializer, VendedorSerializer
 
-# Views existentes (para templates HTML)
-def listar_clientes(request):
-    clientes = Cliente.objects.all()
-    return render(request, 'usuarios/listar_clientes.html', {'clientes': clientes})
+class ClienteViewSet(viewsets.ModelViewSet):
+    queryset = Cliente.objects.all()
+    serializer_class = ClienteSerializer
 
-@login_required
-@permission_required('usuarios.add_cliente', raise_exception=True)
-def criar_cliente(request):
-    if request.method == 'POST':
-        form = ClienteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('usuarios:listar_clientes')
-    else:
-        form = ClienteForm()
-    return render(request, 'usuarios/criar_cliente.html', {'form': form})
-
-@login_required
-@permission_required('usuarios.change_cliente', raise_exception=True)
-def editar_cliente(request, pk):
-    cliente = get_object_or_404(Cliente, pk=pk)
-    if request.method == 'POST':
-        form = ClienteForm(request.POST, instance=cliente)
-        if form.is_valid():
-            form.save()
-            return redirect('usuarios:listar_clientes')
-    else:
-        form = ClienteForm(instance=cliente)
-    return render(request, 'usuarios/editar_cliente.html', {'form': form})
-
-@login_required
-@permission_required('usuarios.delete_cliente', raise_exception=True)
-def deletar_cliente(request, pk):
-    cliente = get_object_or_404(Cliente, pk=pk)
-    if request.method == 'POST':
-        cliente.delete()
-        return redirect('usuarios:listar_clientes')
-    return render(request, 'usuarios/deletar_cliente.html', {'cliente': cliente})
-
-def listar_vendedores(request):
-    vendedores = Vendedor.objects.all()
-    return render(request, 'usuarios
+class VendedorViewSet(viewsets.ModelViewSet):
+    queryset = Vendedor.objects.all()
+    serializer_class = VendedorSerializer

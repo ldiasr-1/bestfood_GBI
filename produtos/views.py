@@ -1,10 +1,32 @@
-from django.shortcuts import render, get_object_or_404, redirect
+# produtos/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.exceptions import PermissionDenied
 from .models import Produto, Tag
 from .forms import ProdutoForm, TagForm
 from promo.models import Promocao
 
-# Views existentes (para templates HTML)
+class ProdutoListView(ListView):
+    model = Produto
+    template_name = 'produtos/listar_produtos.html'
+    context_object_name = 'produtos'
+    paginate_by = 10
+
+    def get_queryset(self):
+        ordenar_por = self.request.GET.get('ordenar', 'preco')
+        queryset = Produto.objects.all().distinct()
+        if ordenar_por == 'preco':
+            queryset = queryset.order_by('preco')
+        elif ordenar_por == 'nome':
+            queryset = queryset.order_by('nome')
+        return queryset
+
+class ProdutoDetailView(DetailView):
+    model = Produto
+    template_name = 'produtos/produt_detail.html'
+    context_object_name = 'produto'
+
 def listar_produtos(request):
     query = request.GET.get('q')
     ordenar_por = request.GET.get('ordenar', 'preco')
@@ -43,7 +65,6 @@ def adicionar_produto(request):
         form = ProdutoForm()
     return render(request, 'produtos/adicionar_produto.html', {'form': form})
 
-@login_required
 @permission_required('produtos.change_produto', raise_exception=True)
 def editar_produto(request, pk):
     produto = get_object_or_404(Produto, pk=pk)
@@ -56,7 +77,6 @@ def editar_produto(request, pk):
         form = ProdutoForm(instance=produto)
     return render(request, 'produtos/editar_produto.html', {'form': form})
 
-@login_required
 @permission_required('produtos.delete_produto', raise_exception=True)
 def deletar_produto(request, pk):
     produto = get_object_or_404(Produto, pk=pk)
@@ -103,7 +123,6 @@ def tag_delete(request, pk):
         return redirect('produtos:tag_list')
     return render(request, 'produtos/tag_confirm_delete.html', {'tag': tag})
 
-# Views da API
 from rest_framework import viewsets
 from .models import Produto, Tag
 from .serializers import ProdutoSerializer, TagSerializer
